@@ -1,0 +1,14 @@
+{
+  "name": "navigator-voice-experiments",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "author": "melonqww",
+  "repository": "https://github.com/melonqww/Navigator.git",
+  "engines": { "node": ">=24.13.0" },
+  "scripts": {
+    "test": "node --test --test-isolation=none tools/voice-lab/test/*.test.mjs",
+    "voice:doctor": "node tools/voice-lab/cli.mjs doctor",
+    "voice:lab": "node tools/voice-lab/cli.mjs"
+  }
+}

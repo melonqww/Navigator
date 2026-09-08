@@ -1,0 +1,48 @@
+# Local project planning and agent instructions (not part of public source)
+/architecture/
+/docs/
+/ai_navigation_tz.md
+AGENTS.md
+
+# Dependencies and build output
+node_modules/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Voice recordings, generated audio, database files and local reports
+/data/
+# Personal recordings and generated media, wherever they are saved
+*.wav
+*.mp3
+*.m4a
+*.aac
+*.ogg
+*.opus
+*.flac
+*.webm
+*.mp4
+*.wma
+*.aiff
+*.aif
+*.log
+__pycache__/
+*.pyc
+.venv/
+
+# Android local state and signing material
+.gradle/
+local.properties
+*.jks
+*.keystore
+
+# Editor and OS state
+.idea/
+.DS_Store
+Thumbs.db

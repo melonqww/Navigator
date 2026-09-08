@@ -10,7 +10,7 @@
 
 HTTP-бэкенд, база голосовых профилей и Android-клиент ещё не реализованы. Карта и полноценная GPS-навигация относятся к последующим этапам.
 
-На GitHub пока публикуется только этот README. Исходники, архитектурные документы и рабочие отчёты остаются в локальной рабочей папке. Команды ниже описывают текущую среду разработки; одного клонирования публичного репозитория для запуска недостаточно.
+В репозитории находятся исходники голосовой лаборатории, тесты, зависимости и примеры текстов. Для локального синтеза отдельно устанавливаются Python-библиотеки и скачиваются веса модели.
 
 ## Базовый принцип
 
@@ -23,6 +23,19 @@ HTTP-бэкенд, база голосовых профилей и Android-кл�
 При синтезе записи остаются на ПК. API-ключи и оплачиваемый облачный сервис для текущего эксперимента не нужны. После первоначальной загрузки модели генерация работает offline и использует ресурсы компьютера.
 
 Для клонирования предполагается собственный голос либо голос человека, разрешившего его использование.
+
+## Быстрый старт
+
+Нужны Git, Node.js 24.13+ и Python 3.11 для быстрых проверок. Из PowerShell:
+
+```powershell
+git clone https://github.com/melonqww/Navigator.git
+cd Navigator
+npm test
+py -3.11 -m unittest discover -s tools/voice-lab/test -p 'test_*.py' -v
+```
+
+Установка npm-пакетов для этих проверок не нужна. Модель и GPU не используются. Для генерации на NVIDIA GPU следуй [инструкции установки](tools/voice-lab/README.md#установка-для-генерации-на-gpu). Для воспроизведения проверки весов доступны возобновляемая загрузка и SHA-256.
 
 ## Локальная голосовая лаборатория
 
@@ -42,7 +55,7 @@ HTTP-бэкенд, база голосовых профилей и Android-кл�
 
 > Сегодня я решил рассказать о привычных вещах, которые делают день приятнее. Утром я открываю окно и прислушиваюсь к звукам улицы. Мне нравится начинать день без спешки, приготовить завтрак и подумать о планах.
 
-Тот же текст в локальной рабочей папке: `fixtures/phrases/reference-short.ru.txt`. Подробная инструкция и длинный вариант: `fixtures/phrases/recording.ru.md`.
+Отдельные файлы: [короткий текст](fixtures/phrases/reference-short.ru.txt) и [инструкция с длинным вариантом](fixtures/phrases/recording.ru.md).
 
 Первый инструмент принимает **WAV PCM 16 бит**, один или два канала, 16–96 кГц. Для синтеза используется образец длиной 3–30 секунд. Файл можно сохранить как `data/samples/my-voice.wav`. При оговорках нужно перезаписать фрагмент или подготовить точную расшифровку в отдельном TXT.
 
@@ -56,10 +69,10 @@ npm run voice:lab -- inspect --sample data/samples/my-voice.wav
 
 ## Генерация новой фразы
 
-На текущем ПК используется окружение `data/voice-runtime-existing`. После подготовки своей записи:
+После установки окружения `data/voice-runtime`, загрузки модели и подготовки своей записи:
 
 ```powershell
-data/voice-runtime-existing/Scripts/python.exe tools/voice-lab/local.py synthesize --sample data/samples/my-voice.wav --transcript fixtures/phrases/reference-short.ru.txt --phrase turn-right --consent
+data/voice-runtime/Scripts/python.exe tools/voice-lab/local.py synthesize --sample data/samples/my-voice.wav --transcript fixtures/phrases/reference-short.ru.txt --phrase turn-right --consent
 ```
 
 Флаг `--consent` подтверждает право использовать запись. В этом примере модель должна произнести: «Через 300 метров поверните направо».
@@ -83,7 +96,7 @@ py -3.11 -m unittest discover -s tools/voice-lab/test -p 'test_*.py' -v
 Проверки с настоящими аудиобиблиотеками и подставным генератором:
 
 ```powershell
-data/voice-runtime-existing/Scripts/python.exe -X utf8 -m unittest discover -s tools/voice-lab/runtime-test -v
+data/voice-runtime/Scripts/python.exe -X utf8 -m unittest discover -s tools/voice-lab/runtime-test -v
 ```
 
 Сейчас проходят **16 Node-тестов, 19 Python-тестов и 5 runtime-тестов**. Они проверяют повреждённые файлы, загрузку весов частями, контрольные суммы, расшифровку, порядок инициализации CUDA, сохранение аудио и обработку ошибок.
@@ -111,7 +124,7 @@ data/voice-runtime-existing/Scripts/python.exe -X utf8 -m unittest discover -s t
 | Android | React, TypeScript, Capacitor | Предварительный выбор |
 | Карта и маршруты | MapLibre, MapTiler, GraphHopper | Кандидаты для проверки |
 
-В текущем окружении проекта повторно используются уже установленные CUDA-библиотеки. Переносимость установки на другой ПК ещё предстоит подтвердить отдельно.
+Приведённые GPU-измерения получены на Python 3.13 с PyTorch 2.7.1 + CUDA 11.8. Отдельная инструкция чистой установки использует Python 3.11 и PyTorch 2.9.1 + CUDA 12.8; эта комбинация ещё не прошла полный GPU-прогон. После установки следует выполнить `load-check` и `runtime-smoke`.
 
 ## Следующие этапы
 

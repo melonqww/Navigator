@@ -1,0 +1,10 @@
+[
+  { "id": "welcome", "category": "new-sentence", "text": "Привет. Теперь я буду помогать тебе во время поездки." },
+  { "id": "turn-right", "category": "distance", "text": "Через 300 метров поверните направо." },
+  { "id": "street-abay", "category": "street", "text": "Через 500 метров поверните налево на проспект Абая." },
+  { "id": "street-qyzylorda", "category": "place", "text": "Продолжайте движение в сторону Кызылорды." },
+  { "id": "numbers", "category": "numbers", "text": "До цели осталось 1,5 километра. Время в пути — 21 минута." },
+  { "id": "close-turns", "category": "pauses", "text": "На следующем перекрёстке поверните направо, затем через 50 метров — налево." },
+  { "id": "roundabout", "category": "ordinal", "text": "На круговом движении воспользуйтесь третьим съездом." },
+  { "id": "arrival", "category": "completion", "text": "Вы прибыли в пункт назначения. Спасибо за поездку!" }
+]
